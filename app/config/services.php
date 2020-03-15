@@ -1,8 +1,13 @@
 <?php
 declare(strict_types=1);
 
+use Phalcon\Dispatcher;
 use Phalcon\Escaper;
+use Phalcon\Events\Event;
+use Phalcon\Events\Manager;
 use Phalcon\Flash\Direct as Flash;
+use Phalcon\Mvc\Dispatcher as MvcDispatcher;
+use Phalcon\Mvc\Dispatcher\Exception as DispatchException;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\View\Engine\Php as PhpEngine;
@@ -82,7 +87,6 @@ $di->setShared('db', function () {
     return new $class($params);
 });
 
-
 /**
  * If the configuration specify the use of metadata adapter use it or use memory otherwise
  */
@@ -120,3 +124,36 @@ $di->setShared('session', function () {
 
     return $session;
 });
+
+$di->setShared(
+    'dispatcher',
+    function () {
+        $eventsManager = new Manager();
+
+        $eventsManager->attach(
+            'dispatch:beforeException',
+            function (
+                Event $event,
+                $dispatcher,
+                Exception $exception
+            ) {
+                // 404
+                if ($exception instanceof DispatchException) {
+                    $dispatcher->forward(
+                        [
+                            'controller' => 'error',
+                            'action'     => '',
+                        ]
+                    );
+
+                    return false;
+                }
+            }
+        );
+
+        $dispatcher = new MvcDispatcher();
+        $dispatcher->setEventsManager($eventsManager);
+
+        return $dispatcher;
+    }
+);

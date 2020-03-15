@@ -1,0 +1,13 @@
+parameters:
+    bootstrap: %rootDir%/../../../bootstrap/phpstan.php
+
+    excludes_analyse:
+        - %rootDir%/../../../src/Generator/*
+        - %rootDir%/../../../src/Commands/DotPhalconMissingException.php
+    ignoreErrors:
+        - '#Strict comparison using === between#'
+        - '#Result of && is always true#'
+        - '#Result of || is always true#'
+        - '#Parameter \#1 \$adapter of class Phalcon\\Cache constructor expects#'
+        - '#Parameter \#1 \$eventsManager of method Phalcon#'
+    reportUnmatchedIgnoredErrors: false

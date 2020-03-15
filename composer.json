@@ -1,0 +1,15 @@
+{
+    "name": "white/m10",
+    "type": "project",
+    "require-dev": {
+        "phalcon/devtools": "^4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sergey Bely",
+            "email": "white8141@yandex.ru"
+        }
+    ],
+    "require": {}
+}
