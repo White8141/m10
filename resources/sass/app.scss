@@ -36,7 +36,6 @@ button {
   font-weight: 600;
 }
 
-
 body {
 
   nav {
@@ -499,6 +498,52 @@ body {
         }
       }
     }
+    .content-error {
+      padding: 24px 0px;
+      text-align: center;
+
+      .error-code {
+        margin: 32px auto;
+        text-shadow:  #9922F0 1px 1px,
+                      #9922F0 2px 2px,
+                      #9e2ef0 3px 3px,
+                      #9e2ef0 4px 4px,
+                      #a63ff1 5px 5px,
+                      #a63ff1 6px 6px,
+                      #aa4cef 7px 7px,
+                      #aa4cef 8px 8px,
+                      #b058f1 9px 9px,
+                      #b058f1 10px 10px,
+                      #b767f1 11px 11px,
+                      #b767f1 12px 12px,
+                      #bc74f1 13px 13px,
+                      #bc74f1 14px 14px;
+        font-size: 10rem;
+        color: #eee;
+      }
+
+      .error-message {
+        margin: 32px auto;
+      }
+
+      a.home-button {
+        display: inline-block;
+        //margin: 32px auto;
+        padding: 10px;
+        border: 2px solid #9922F0;
+        border-radius: 20px;
+        height: 45px;
+        color: #9922F0 !important;
+        background-color: #fff;
+        box-shadow: 2px 2px 8px #999;
+        line-height: normal;
+
+        &:hover {
+          background-color: #9922F0;
+          color: #fff !important;
+        }
+      }
+    }
   }
 
   .modal {
@@ -540,6 +585,8 @@ body {
   }
 
   footer {
+    /*position: relative;
+    top: -80px;*/
     height: 80px;
     background-color: #9922F0;
     padding-top: 2px;

@@ -225,8 +225,17 @@
                 isListEmpty: false,
                 isInfoLoaded: false,
                 responceData: [],
-                currrPlaceList: [],
-                requestString: ''
+                currrPlaceList: []
+            }
+        },
+        props: {
+            token: {
+                type: String,
+                required: true
+            },
+            tokenKey: {
+                type: String,
+                required: true
             }
         },
         mounted: function () {
@@ -521,220 +530,322 @@
             sendRequest: function (target) {
                 switch (target) {
                     case 'routes':
-                        this.requestString = 'http://93.84.84.168:9494/BiletionApiService/routes?apikey=56tRR980oPkbx';
-                        axios.get(this.requestString)
-                                .then(this.parseRoutes);
+                        axios({
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                data: {
+                                    [this.tokenKey]: this.token
+                                },
+                                url: '/api/routes'
+                            })
+                            .then(this.parseRoutes);
                         break;
                     case 'musters':
                         //console.log('Получить остановки. Сначала завтрашние маршруты');
                         var tempDate = new Date (this.currDate.toString());
                         tempDate.setDate(tempDate.getDate() + 1);
-                        tempDate = tempDate.toLocaleString().substr(0, 10);
-                        this.requestString = 'http://93.84.84.168:9494/BiletionApiService/trips/filter3/' + tempDate + ' 00:00:00/' + tempDate + ' 23:59:59/' + this.routeId + '/00000000-0000-0000-0000-000000000000/00000000-0000-0000-0000-000000000000/True?apikey=56tRR980oPkbx';
-                        axios.get(this.requestString)
-                                .then(this.getDefaultTrips);
+                        //tempDate = tempDate.toLocaleString().substr(0, 10);
+
+                        axios({
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                data: {
+                                    [this.tokenKey]: this.token,
+                                    date: tempDate.getDate() + '.' + (1 + tempDate.getMonth()) + '.' + tempDate.getFullYear(),
+                                    route: this.routeId
+                                },
+                                url: '/api/trips'
+                            })
+                            .then(this.getDefaultTrips);
                         break;
                     case 'trips':
                         //console.log('Получить маршруты данного направления');
-                        this.requestString = 'http://93.84.84.168:9494/BiletionApiService/trips/filter3/' + this.dateValue + ' 00:00:00/' + this.dateValue + ' 23:59:59/' + this.routeId + '/00000000-0000-0000-0000-000000000000/00000000-0000-0000-0000-000000000000/True?apikey=56tRR980oPkbx';
                         this.isPreloaderVisible = true;
-                        axios.get(this.requestString)
-                                .then(this.parseTrips)
-                                .finally(() => (this.isPreloaderVisible = false));
+                        axios({
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                data: {
+                                    [this.tokenKey]: this.token,
+                                    date: this.dateValue,
+                                    route: this.routeId
+                                },
+                                url: '/api/trips'
+                            })
+                            .then(this.parseTrips)
+                            .finally(() => (this.isPreloaderVisible = false));
                         break;
                     case 'info':
                         //console.log('Получить подробную информацию маршрута');
-                        this.requestString = 'http://93.84.84.168:9494/BiletionApiService/trip/' + this.currTripId + '?apikey=56tRR980oPkbx';
-                        //this.isPreloaderVisible = true;
-                        axios.get(this.requestString)
+                        if (this.currTripId != '' && this.currTripId != undefined) {
+                            this.isPreloaderVisible = true;
+                            axios({ method: 'POST',
+                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                    data: {
+                                        [this.tokenKey]: this.token,
+                                        tripId: this.currTripId
+                                    },
+                                    url: '/api/trip'
+                                })
                                 .then(this.parseInfo)
                                 .finally(() => (this.isPreloaderVisible = false));
+                        }
                         break;
                 }
             },
             parseRoutes: function (responce) {
-                this.responceData = responce.data;
+                try {
+                    this.responceData = JSON.parse(responce.data);
 
-                /*this.routeList.forEach(function (item, i) {
-                    //console.log ('Надо добавить цену маршруту ' + item.CityFrom + ' - ' + item.CityTo);
-                    if (item.ID in this.routePriceList) {
-                        item.Price = this.routePriceList[item.ID];
-                    } else {
-                        item.Price = 0;
-                    }
-                }, this);*/
+                    /*this.routeList.forEach(function (item, i) {
+                     //console.log ('Надо добавить цену маршруту ' + item.CityFrom + ' - ' + item.CityTo);
+                     if (item.ID in this.routePriceList) {
+                     item.Price = this.routePriceList[item.ID];
+                     } else {
+                     item.Price = 0;
+                     }
+                     }, this);*/
 
-                this.responceData.forEach(function(item) {
-                    this.routeList.push(item);
-                }, this);
+                    this.responceData.forEach(function(item) {
+                        this.routeList.push(item);
+                    }, this);
 
-                this.routeList = this.routeList.sort(function (a, b) {
-                    if (+a['Name'] > +b['Name']) {
-                        return 1;
-                    } else {
-                        return -1;
-                    }
-                });
-
-                this.routeList.map(function(item) {
-                    if (item['CityFrom'] == 'Мозырь') {
-                        this.routeSortedList.push(item);
-                        var tempVar = this.routeList.find(function (routeItem) {
-                            return routeItem['CityFrom'] == item['CityTo'];
-                        }, this);
-                        if (tempVar != undefined) this.routeSortedList.push(tempVar);
-                    }
-                }, this);
-
-                this.sendRequest('musters');
-            },
-            getDefaultTrips: function (responce) {
-                //console.log('Обработать маршруты, и получить данные первого доступного');
-                if (responce.data.length > 0) {
-                    console.log('Есть маршруты, ' + responce.data.length + ' шт. Можно получить остановки');
-                    this.requestString = 'http://93.84.84.168:9494/BiletionApiService/trip/' + responce.data[0].ID + '?apikey=56tRR980oPkbx';
-                    axios.get(this.requestString)
-                            .then(this.getCurrPlaces);
-                } else {
-                    //console.log('Нет маршрутов на этот день, попробуем на 2 недели вперед');
-                    var startDate = new Date (this.currDate.toString());
-                    startDate = startDate.toLocaleString().substr(0, 10);
-                    var endDate = new Date (this.currDate.toString());
-                    endDate.setDate(endDate.getDate() + 14);
-                    endDate = endDate.toLocaleString().substr(0, 10);
-                    this.requestString = 'http://93.84.84.168:9494/BiletionApiService/trips/filter3/' + startDate + ' 00:00:00/' + endDate + ' 23:59:59/' + this.routeId + '/00000000-0000-0000-0000-000000000000/00000000-0000-0000-0000-000000000000/True?apikey=56tRR980oPkbx';
-                    axios.get(this.requestString)
-                            .then(this.getWeekTrips);
-                }
-            },
-            getWeekTrips: function (responce) {
-                if (responce.data.length > 0) {
-                    console.log('Есть ' + responce.data.length + ' шт.');
-                    this.requestString = 'http://93.84.84.168:9494/BiletionApiService/trip/' + responce.data[0].ID + '?apikey=56tRR980oPkbx';
-                    axios.get(this.requestString)
-                            .then(this.getCurrPlaces);
-                } else {
-                    //console.log('Маршрутов нет даже на 2 недели вперед, надо самому добавлять');
-                    this.placesArray[this.routeId] = {};
-                    this.placesArray[this.routeId].musterArray = this.currPlacesFromArray = [{'name': this.cityFrom, 'value': this.cityFrom}];
-                    this.placesArray[this.routeId].destinationArray = this.currPlacesToArray = [{'name': this.cityTo, 'value': this.cityTo}];
-                }
-
-            },
-            getCurrPlaces: function (responce) {
-                //console.log('Теперь нужно заполнить массив остановок маршрута по умолчанию');
-                this.placesArray[this.routeId] = {};
-                this.placesArray[this.routeId].musterArray = this.currPlacesFromArray = responce.data.MusterRouteItems;
-                this.placesArray[this.routeId].destinationArray = this.currPlacesToArray = responce.data.RouteDestinations;
-                this.placesArray[this.routeId].musterArray.map(function (item, i) {
-                    if (item['Description'] == null) {
-                        item['Description'] = item['value'] = item['Name'];
-                    } else {
-                        item['value'] = item['Name'] + ' (' + item['Description'] + ')';
-                    }
-                    item['name'] = item['Description'];
-                }, this);
-                this.placesArray[this.routeId].destinationArray.map(function (item, i) {
-                    if (item['Direction'] == null) {
-                        item['Direction'] = item['value'] = item['Name'];
-                    } else {
-                        item['value'] = item['Name'] + ' (' + item['Direction'] + ')';
-                    }
-                    item['name'] = item['Direction'];
-
-                }, this);
-            },
-            parseTrips: function (responce) {
-                this.responceData = responce.data;
-                this.tripList = [];
-
-                this.responceData.forEach(function(item, i) {
-                    var tripDate = new Date(item.TripDateUniverse);
-
-                    /*if (+tripDate.getHours() == 6) {
-                     //console.log ('Рейс на 6 утра, ID: ' + item.ID);
-                     }*/
-
-                    if (item.SeatsCount == 0) item.SeatsCount = 17;
-
-                    if (tripDate.getMinutes() == 0) this.tripList[i] = [tripDate.getHours(), '00', item.ID, (item.SeatsCount - item.SeatsBusyCount), item.TripStartDateUniverse]
-                    else this.tripList[i] = [tripDate.getHours(), tripDate.getMinutes(), item.ID, (item.SeatsCount - item.SeatsBusyCount), item.TripStartDateUniverse];
-
-
-                }, this);
-
-                this.tripList = this.tripList.filter(item => item[3] > 0);
-
-                this.tripList.sort(function(a, b) {
-                    if (+a[0] > +b[0]) {
-                        return 1;
-                    } else {
-                        if (+a[0] == +b[0]) {
-                            if (+a[1] > +b[1]) {
-                                return 1;
-                            } else {
-                                return -1;
-                            }
+                    this.routeList = this.routeList.sort(function (a, b) {
+                        if (+a['Name'] > +b['Name']) {
+                            return 1;
                         } else {
                             return -1;
                         }
-                    }
-                });
+                    });
 
-                if (this.tripList.length > 0) {
-                    this.isListEmpty = false;
-                } else {
-                    this.isListEmpty = true;
-                }
-                //console.log ('Массив поездок обновлен');
-
-                if (this.time != '0') {
-                    if (this.tripList.length > 0) {
-                        var tempArray = this.tripList.filter(function (item) {
-                            return this.time == item[0] + ':' + item[1];
-                        }, this);
-
-                        if (tempArray.length > 0) {
-                            this.currTripId = tempArray[0][2];
-                        } else {
-                            this.currTripId = '';
-                            this.time = '0';
-                            $('form .label-body .date-time-container').css('top', '-279px');
-                            //console.log ('На такое время в этот день поездок нет');
+                    this.routeList.map(function(item) {
+                        if (item['CityFrom'] == 'Мозырь') {
+                            this.routeSortedList.push(item);
+                            var tempVar = this.routeList.find(function (routeItem) {
+                                return routeItem['CityFrom'] == item['CityTo'];
+                            }, this);
+                            if (tempVar != undefined) this.routeSortedList.push(tempVar);
                         }
-                    }
+                    }, this);
 
-
+                    this.sendRequest('musters');
+                } catch (err) {
+                    console.log ('Routes Error:');
+                    console.log ('Name: ' + err.name);
+                    console.log ('Message: ' + err.message);
                 }
             },
-            parseInfo: function (responce) {
-                //console.log ('Данные маршрута обновленны');
-                this.responceData = responce.data;
-                this.tripDataArray['muster'] = this.responceData.MusterRouteItems;
-                this.tripDataArray['busColor'] = this.responceData.BusColor;
-                this.tripDataArray['busName'] = this.responceData.BusName;
-                this.tripDataArray['distanceTime'] = this.responceData.DistanceTime;
-                this.tripDataArray['tripStartDateUniverse'] = this.responceData.TripStartDateUniverse;
-                this.tripDataArray['muster'].sort(function(a, b) {
-                    if (+a.Position > +b.Position) {
-                        return 1;
+            getDefaultTrips: function (responce) {
+                try {
+                    this.responceData = JSON.parse(responce.data);
+
+                    //console.log('Обработать маршруты, и получить данные первого доступного');
+                    if (this.responceData.length > 0) {
+                        //console.log('Есть маршруты, ' + this.responceData.length + ' шт. Можно получить остановки');
+                        axios({
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                data: {
+                                    [this.tokenKey]: this.token,
+                                    tripId: this.responceData[0].ID
+                                },
+                                url: '/api/trip'
+                            })
+                            .then(this.getCurrPlaces);
                     } else {
-                        return -1;
+                        //console.log('Нет маршрутов на этот день, попробуем на 2 недели вперед');
+                        var startDate = new Date (this.currDate.toString());
+                        //startDate = startDate.toLocaleString().substr(0, 10);
+                        var endDate = new Date (this.currDate.toString());
+                        endDate.setDate(endDate.getDate() + 14);
+                        //endDate = endDate.toLocaleString().substr(0, 10);
+                        axios({
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                data: {
+                                    [this.tokenKey]: this.token,
+                                    date: startDate.getDate() + '.' + (1 + startDate.getMonth()) + '.' + startDate.getFullYear(),
+                                    endDate: endDate.getDate() + '.' + (1 + endDate.getMonth()) + '.' + endDate.getFullYear(),
+                                    route: this.routeId
+                                },
+                                url: '/api/trips'
+                            })
+                            .then(this.getWeekTrips);
                     }
-                });
+                } catch (err) {
+                    console.log ('Routes Error:');
+                    console.log ('Name: ' + err.name);
+                    console.log ('Message: ' + err.message);
+                }
 
-                //this.tripDataArray['tripStartDateUniverse'].slice(-5);
+            },
+            getWeekTrips: function (responce) {
+                try {
+                    this.responceData = JSON.parse(responce.data);
 
-                var musterDate = new Date(this.tripDataArray['tripStartDateUniverse']);
-                this.tripDataArray['muster'].map(function (item, i) {
-                    //console.log (item.Description + ': ' + musterDate.getHours() + ':' + musterDate.getMinutes());
-                    item['MusterTime'] = musterDate.getHours() + ':' + musterDate.getMinutes();
-                    musterDate.setMinutes(musterDate.getMinutes() + this.currMusterTime[i]);
-                }, this);
+                    if (this.responceData.length > 0) {
+                        //console.log('Есть ' + this.responceData.length + ' шт.');
+                        axios({
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            data: {
+                                [this.tokenKey]: this.token,
+                                tripId: this.responceData[0].ID
+                            },
+                            url: '/api/trip'
+                        })
+                                .then(this.getCurrPlaces);
+                    } else {
+                        //console.log('Маршрутов нет даже на 2 недели вперед, надо самому добавлять');
+                        this.placesArray[this.routeId] = {};
+                        this.placesArray[this.routeId].musterArray = this.currPlacesFromArray = [{'name': this.cityFrom, 'value': this.cityFrom}];
+                        this.placesArray[this.routeId].destinationArray = this.currPlacesToArray = [{'name': this.cityTo, 'value': this.cityTo}];
+                    }
+                } catch (err) {
+                        console.log ('Week Error:');
+                        console.log ('Name: ' + err.name);
+                        console.log ('Message: ' + err.message);
+                }
 
-                this.isInfoLoaded = true;
-                this.infoToggle = 'modal';
-                //console.log ('Массив данных поездки обновлен');
+
+            },
+            getCurrPlaces: function (responce) {
+                try {
+                    this.responceData = JSON.parse(responce.data);
+
+                    //console.log('Теперь нужно заполнить массив остановок маршрута по умолчанию');
+                    this.placesArray[this.routeId] = {};
+                    this.placesArray[this.routeId].musterArray = this.currPlacesFromArray = this.responceData.MusterRouteItems;
+                    this.placesArray[this.routeId].destinationArray = this.currPlacesToArray = this.responceData.RouteDestinations;
+                    this.placesArray[this.routeId].musterArray.map(function (item, i) {
+                        if (item['Description'] == null) {
+                            item['Description'] = item['value'] = item['Name'];
+                        } else {
+                            item['value'] = item['Name'] + ' (' + item['Description'] + ')';
+                        }
+                        item['name'] = item['Description'];
+                    }, this);
+                    this.placesArray[this.routeId].destinationArray.map(function (item, i) {
+                        if (item['Direction'] == null) {
+                            item['Direction'] = item['value'] = item['Name'];
+                        } else {
+                            item['value'] = item['Name'] + ' (' + item['Direction'] + ')';
+                        }
+                        item['name'] = item['Direction'];
+
+                    }, this);
+                } catch (err) {
+                    console.log ('Muster Error:');
+                    console.log ('Name: ' + err.name);
+                    console.log ('Message: ' + err.message);
+                }
+
+            },
+            parseTrips: function (responce) {
+                try {
+                    this.responceData = JSON.parse(responce.data);
+                    this.tripList = [];
+
+                    this.responceData.forEach(function(item, i) {
+                        var tripDate = new Date(item.TripDateUniverse);
+
+                        /*if (+tripDate.getHours() == 6) {
+                         //console.log ('Рейс на 6 утра, ID: ' + item.ID);
+                         }*/
+
+                        if (item.SeatsCount == 0) item.SeatsCount = 17;
+
+                        if (tripDate.getMinutes() == 0) this.tripList[i] = [tripDate.getHours(), '00', item.ID, (item.SeatsCount - item.SeatsBusyCount), item.TripStartDateUniverse]
+                        else this.tripList[i] = [tripDate.getHours(), tripDate.getMinutes(), item.ID, (item.SeatsCount - item.SeatsBusyCount), item.TripStartDateUniverse];
+
+
+                    }, this);
+
+                    this.tripList = this.tripList.filter(item => item[3] > 0);
+
+                    this.tripList.sort(function(a, b) {
+                        if (+a[0] > +b[0]) {
+                            return 1;
+                        } else {
+                            if (+a[0] == +b[0]) {
+                                if (+a[1] > +b[1]) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+                            } else {
+                                return -1;
+                            }
+                        }
+                    });
+
+                    if (this.tripList.length > 0) {
+                        this.isListEmpty = false;
+                    } else {
+                        this.isListEmpty = true;
+                    }
+                    //console.log ('Массив поездок обновлен');
+
+                    if (this.time != '0') {
+                        if (this.tripList.length > 0) {
+                            var tempArray = this.tripList.filter(function (item) {
+                                return this.time == item[0] + ':' + item[1];
+                            }, this);
+
+                            if (tempArray.length > 0) {
+                                this.currTripId = tempArray[0][2];
+                            } else {
+                                this.currTripId = '';
+                                this.time = '0';
+                                $('form .label-body .date-time-container').css('top', '-279px');
+                                //console.log ('На такое время в этот день поездок нет');
+                            }
+                        }
+
+
+                    }
+                } catch (err) {
+                    console.log ('Trips Error:');
+                    console.log ('Name: ' + err.name);
+                    console.log ('Message: ' + err.message);
+                }
+
+            },
+            parseInfo: function (responce) {
+                try {
+                    //console.log ('Данные маршрута обновленны');
+                    this.responceData = JSON.parse(responce.data);
+
+                    this.tripDataArray['muster'] = this.responceData.MusterRouteItems;
+                    this.tripDataArray['busColor'] = this.responceData.BusColor;
+                    this.tripDataArray['busName'] = this.responceData.BusName;
+                    this.tripDataArray['distanceTime'] = this.responceData.DistanceTime;
+                    this.tripDataArray['tripStartDateUniverse'] = this.responceData.TripStartDateUniverse;
+                    this.tripDataArray['muster'].sort(function(a, b) {
+                        if (+a.Position > +b.Position) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    });
+
+                    //this.tripDataArray['tripStartDateUniverse'].slice(-5);
+
+                    var musterDate = new Date(this.tripDataArray['tripStartDateUniverse']);
+                    this.tripDataArray['muster'].map(function (item, i) {
+                        //console.log (item.Description + ': ' + musterDate.getHours() + ':' + musterDate.getMinutes());
+                        item['MusterTime'] = musterDate.getHours() + ':' + musterDate.getMinutes();
+                        musterDate.setMinutes(musterDate.getMinutes() + this.currMusterTime[i]);
+                    }, this);
+
+                    this.isInfoLoaded = true;
+                    this.infoToggle = 'modal';
+                    //console.log ('Массив данных поездки обновлен');
+                } catch (err) {
+                    console.log ('Info Error:');
+                    console.log ('Name: ' + err.name);
+                    console.log ('Message: ' + err.message);
+                }
+
             }
         },
         computed: {

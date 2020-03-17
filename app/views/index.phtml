@@ -32,7 +32,32 @@
     </div>
 </nav>
 
-<?php echo $this->getContent(); ?>
+
+<div class="content">
+    <div class="content-main">
+        <p class="main-title">Мозырь - Экспресс</p>
+        <!--p class="main-text">Маршрутка Мозырь-Гомель</p-->
+        <div class="d-flex justify-content-center">
+            <p class="main-tel">8 (</p>
+            <ul class="align-bottom main-list">
+                <li><a href="tel:8 029 539 98 77"><img class="main-list" src="/img/logo-mts.jpg"> 029</a></li>
+                <li><a href="tel:8 044 539 98 77"><img class="main-list" src="/img/logo-velcom.jpg"> 044</a></li>
+                <li><a href="tel:8 025 539 98 77"><img class="main-list" src="/img/logo-life.jpg"> 025</a></li>
+            </ul>
+            <p class="main-tel">) <a href="tel: 539 98 77"> 539-98-77</a></p>
+        </div>
+    </div>
+    <?php echo $this->getContent(); ?>
+    <div class="content-warning">
+        <div class="container">
+            <p class="warning-title">Внимание!</p>
+            <p class="warning-content">
+                При возниковении проблем <a class="modal-link" data-toggle="modal" href="#phoneCall" aria-expanded="false" aria-controls="phoneCall">позвоните</a> оператору.<br>
+                Вам помогут забронировать место или решить возникшую проблему.
+            </p>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="phoneCall" tabindex="-1" role="dialog" aria-labelledby="phoneCall" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -195,9 +220,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <!-- Vue.js -->
-<script src="https://ru.vuejs.org/js/vue.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/js/datepicker.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://ru.vuejs.org/js/vue.js"></script>
 
 <script>
     var postString =  '<?php

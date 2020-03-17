@@ -125,6 +125,9 @@ $di->setShared('session', function () {
     return $session;
 });
 
+/**
+ * Register deipatcher for Exeption
+ */
 $di->setShared(
     'dispatcher',
     function () {
@@ -142,7 +145,8 @@ $di->setShared(
                     $dispatcher->forward(
                         [
                             'controller' => 'error',
-                            'action'     => '',
+                            'action'     => 'index',
+                            'params'      => [$exception]
                         ]
                     );
 
