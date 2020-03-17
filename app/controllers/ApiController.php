@@ -35,5 +35,15 @@ class ApiController extends ControllerApi
             ]
         );
     }
+
+    public function userAction () {
+        echo ('user login');
+        /*$this->dispatcher->forward(
+            [
+                'controller' => 'trips',
+                'action' => 'findByID'
+            ]
+        );*/
+    }
 }
 

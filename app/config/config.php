@@ -11,9 +11,9 @@ return new \Phalcon\Config([
     'database' => [
         'adapter'     => 'Mysql',
         'host'        => 'localhost',
-        'username'    => 'root',
-        'password'    => '',
-        'dbname'      => 'test',
+        'username'    => 'beewhite',
+        'password'    => 'nwb4288797',
+        'dbname'      => 'mozyr_express',
         'charset'     => 'utf8',
     ],
     'application' => [

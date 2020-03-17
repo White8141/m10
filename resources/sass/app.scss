@@ -57,7 +57,14 @@ body {
           height: 50px;
         }
 
-        .m-2 {
+        a.text-link {
+          margin-top: 10px;
+          font-weight: 600 !important;
+          font-size: 18px;
+          color: #9922F0 !important;
+        }
+
+        /*.m-2 {
           margin: 4px !important;
 
           a {
@@ -78,7 +85,7 @@ body {
               }
             }
           }
-        }
+        }*/
       }
     }
   }
