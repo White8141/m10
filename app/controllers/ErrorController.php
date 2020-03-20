@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-class ErrorController extends ControllerBase
+class ErrorController extends ControllerView
 {
     /**
      * Страница 404
@@ -9,8 +9,8 @@ class ErrorController extends ControllerBase
     public function indexAction($exception)
     {
         //TODO необходимо вносить в лог сообщения об ошибках
-        
-        $this->view->setVar('message', 'Извините, но мы не смогли найти эту страницу :(');
+
+        $this->view->setVar('message', 'Извините, но мы не смогли найти эту страницу :( '/*.$exception->getMessage()*/);
     }
 }
 

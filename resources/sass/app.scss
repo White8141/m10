@@ -1,4 +1,4 @@
-a, p, ul, span, label {
+a, p, ul, span, label, h1 {
   font-family: 'Montserrat', sans-serif !important;
   font-weight: 400 !important;
   color: #000 !important;
@@ -23,6 +23,37 @@ p.section-title {
 }
 button {
   min-height: 38px !important;
+
+  &.app-button {
+    //margin: 32px auto;
+    outline: none !important;
+    cursor: pointer;
+    line-height: normal;
+    padding: 10px;
+    border: 2px solid #9922F0;
+    border-radius: 20px;
+    height: 45px;
+    color: #9922F0 !important;
+    background-color: #fff;
+    box-shadow: 2px 2px 8px #999;
+    //opacity: .5;
+
+    &:hover {
+      background-color: #9922F0;
+      color: #fff !important;
+    }
+
+    &.gray {
+      border: 2px solid #777;
+      color: #777 !important;
+      margin-left: 1rem;
+
+      &:hover {
+        background-color: #777;
+        color: #fff !important;
+      }
+    }
+  }
 }
 .datepicker--cell.-selected-, .datepicker--cell.-selected-.-current- {
   background: #9922f0 !important;
@@ -53,11 +84,32 @@ body {
         width: 100%;
         margin-left: 0px;
 
+        .dropdown-menu {
+          border-radius: 20px;
+          overflow: hidden;
+
+          button.dropdown-item {
+            text-align: end !important;
+
+            &:focus {
+              outline: none;
+              background-color: #9922F0;
+            }
+          }
+        }
+
+
+
+        .block .invisible {
+          display: none;
+        }
+
         img {
           height: 50px;
         }
 
         a.text-link {
+          display: block;
           margin-top: 10px;
           font-weight: 600 !important;
           font-size: 18px;
@@ -86,6 +138,7 @@ body {
             }
           }
         }*/
+
       }
     }
   }
@@ -574,6 +627,39 @@ body {
     span.modal-title-section {
       font-weight: 600;
       font-size: 18px;
+    }
+
+    .modal-header {
+      background-color: #9922F0;
+      color: #fff !important;
+    }
+    .modal-body {
+
+      form {
+
+        p.alert-message {
+          color: #ff0000 !important;
+          text-align: center;
+          min-height: 1.5rem;
+          line-height: normal;
+          margin-bottom: 0px;
+        }
+
+        input.input-wrong {
+          border: 1px solid #ff0000;
+          box-shadow: #ff0000 0px 0px 7px;
+        }
+      }
+
+    }
+    .modal-footer {
+      a {
+        margin-top: .5rem;
+        color: #9922F0;
+      }
+      button {
+        min-width: 81px;
+      }
     }
 
     .info-container {

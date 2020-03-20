@@ -1,11 +1,21 @@
 <?php
 declare(strict_types=1);
 
-class IndexController extends ControllerView
+use App\Models\User;
+use Phalcon\Mvc\Controller;
+
+class ControllerView extends Controller
 {
-    public function indexAction()
+    // Implement common logic
+    public function initialize()
     {
-        /*if ($this->session->has('phone') && $this->session->has('password')) {
+        $this->view->setVar('isAuth', false);
+        $this->view->setVar('name', '');
+        $this->view->setVar('id', '');
+        $this->view->setVar('data', []);
+        $this->view->setVar('message', '');
+
+        if ($this->session->has('phone') && $this->session->has('password')) {
 
             $user = User::findFirst([
                 'conditions' => 'phoneNumber = :phone:',
@@ -19,13 +29,8 @@ class IndexController extends ControllerView
                     $this->view->setVar('isAuth', true);
                     $this->view->setVar('name', explode(' ', $user->name)[1]);
                     $this->view->setVar('id', $user->biletionId);
-                } else {
-                    $this->view->setVar('isAuth', false);
                 }
             }
-        } else {
-            $this->view->setVar('isAuth', false);
-        }*/
+        }
     }
 }
-

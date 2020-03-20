@@ -1,7 +1,9 @@
 <?php
 
+namespace App\Models;
+
 use Phalcon\Validation;
-use Phalcon\Validation\Validator\Email as EmailValidator;
+use Phalcon\Validation\Validator\Digit as DigitValidator;
 
 class User extends \Phalcon\Mvc\Model
 {
@@ -11,6 +13,8 @@ class User extends \Phalcon\Mvc\Model
      * @var integer
      */
     public $id;
+
+    public $password;
 
     /**
      *
@@ -40,13 +44,7 @@ class User extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $first_name;
-
-    /**
-     *
-     * @var string
-     */
-    public $last_name;
+    public $name;
 
     /**
      *
@@ -76,11 +74,11 @@ class User extends \Phalcon\Mvc\Model
         $validator = new Validation();
 
         $validator->add(
-            'email',
-            new EmailValidator(
+            'phoneNumber',
+            new DigitValidator(
                 [
                     'model'   => $this,
-                    'message' => 'Please enter a correct email address',
+                    'message' => 'Please enter a correct phone number',
                 ]
             )
         );
@@ -117,6 +115,22 @@ class User extends \Phalcon\Mvc\Model
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+
+    public function columnMap () {
+        return [
+            'id'            => 'id',
+            'phone_number'  => 'phoneNumber',
+            'password'      => 'password',
+            'name'          => 'name',
+            'adress'        => 'adress',
+            'birth_date'    => 'birthDate',
+            'email'         => 'email',
+            'biletion_id'   => 'biletionId',
+            'phone_id'      => 'phoneId',
+            'is_blacklist'  => 'isBlacklist'
+
+        ];
     }
 
 }

@@ -2,7 +2,8 @@ a,
 p,
 ul,
 span,
-label {
+label,
+h1 {
   font-family: "Montserrat", sans-serif !important;
   font-weight: 400 !important;
   color: #000 !important;
@@ -32,6 +33,35 @@ p.section-title {
 
 button {
   min-height: 38px !important;
+}
+
+button.app-button {
+  outline: none !important;
+  cursor: pointer;
+  line-height: normal;
+  padding: 10px;
+  border: 2px solid #9922F0;
+  border-radius: 20px;
+  height: 45px;
+  color: #9922F0 !important;
+  background-color: #fff;
+  box-shadow: 2px 2px 8px #999;
+}
+
+button.app-button:hover {
+  background-color: #9922F0;
+  color: #fff !important;
+}
+
+button.app-button.gray {
+  border: 2px solid #777;
+  color: #777 !important;
+  margin-left: 1rem;
+}
+
+button.app-button.gray:hover {
+  background-color: #777;
+  color: #fff !important;
 }
 
 .datepicker--cell.-selected-,
@@ -89,11 +119,30 @@ body nav.navbar .row {
   }*/
 }
 
+body nav.navbar .row .dropdown-menu {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+body nav.navbar .row .dropdown-menu button.dropdown-item {
+  text-align: end !important;
+}
+
+body nav.navbar .row .dropdown-menu button.dropdown-item:focus {
+  outline: none;
+  background-color: #9922F0;
+}
+
+body nav.navbar .row .block .invisible {
+  display: none;
+}
+
 body nav.navbar .row img {
   height: 50px;
 }
 
 body nav.navbar .row a.text-link {
+  display: block;
   margin-top: 10px;
   font-weight: 600 !important;
   font-size: 18px;
@@ -588,6 +637,33 @@ body .modal span.modal-float-right {
 body .modal span.modal-title-section {
   font-weight: 600;
   font-size: 18px;
+}
+
+body .modal .modal-header {
+  background-color: #9922F0;
+  color: #fff !important;
+}
+
+body .modal .modal-body form p.alert-message {
+  color: #ff0000 !important;
+  text-align: center;
+  min-height: 1.5rem;
+  line-height: normal;
+  margin-bottom: 0px;
+}
+
+body .modal .modal-body form input.input-wrong {
+  border: 1px solid #ff0000;
+  box-shadow: #ff0000 0px 0px 7px;
+}
+
+body .modal .modal-footer a {
+  margin-top: 0.5rem;
+  color: #9922F0;
+}
+
+body .modal .modal-footer button {
+  min-width: 81px;
 }
 
 body .modal .info-container .info-muster .row {

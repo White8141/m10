@@ -1,7 +1,7 @@
 let mix = require('laravel-mix');
 
 mix.sourceMaps()
-   .js('resources/js/app.js', 'public/js/')
+   .js(['resources/js/app.js', 'resources/js/login.js'], 'public/js/')
    .sass('resources/sass/app.scss', 'public/css/');
 
 // Full API
