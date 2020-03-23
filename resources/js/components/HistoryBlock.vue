@@ -6,15 +6,19 @@
         <tr>
             <th scope="col">Дата</th>
             <th scope="col">Маршрут</th>
+            <th scope="col">Откуда</th>
+            <th scope="col">Куда</th>
             <th scope="col">Статус</th>
-            <th scope="col">Дополнительно</th>
+            <th scope="col">Комментарии</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="history in historyList">
+        <tr v-for="history in historyList" :key="history.ID">
             <th scope="row">{{ history.CollectDateUniverse | dateTimeFilter}}</th>
             <td>{{ history.RouteName  | routeNameFilter}}</td>
-            <td>{{ history.TripStatusID }}</td>
+            <td>{{ history.MusterRouteItemName }}</td>
+            <td>{{ history.RouteDestinationName}}</td>
+            <td>{{ history.PassengerStateID | statusFilter}}</td>
             <td>{{ history.Comment }}</td>
         </tr>
         </tbody>
@@ -24,13 +28,9 @@
 
 <style></style>
 <script>
-    //import OtherComponent from './components/other.vue'
     export default{
         data(){
             return{
-                postString: postString,
-                post: {},
-                ////////
                 historyList: []
             }
         },
@@ -165,6 +165,16 @@
             },
             routeNameFilter: function (val) {
                 return val.substr(1)
+            },
+            statusFilter: function (val) {
+                switch (val) {
+                    case 1:
+                        return "Зарегистрирован"
+                        break;
+                    default:
+                        return "Отменён"
+                        break;
+                }
             }
         }
     }
