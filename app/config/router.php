@@ -5,19 +5,19 @@ $router = $di->getRouter();
 /*
  * Если понадобится запретить прямой доступ к контроллерам Routes и Trips, эти роуты перенаправляют прямые запросы на них на Api контроллер
  */
-/*$router->add (
-    '/routes',
+$router->add (
+    '/history',
     [
-        'controller' => 'api',
-        'action' => 'routes'
+        'controller' => 'user',
+        'action' => 'history'
     ]
 );
 $router->add (
-    '/trips',
+    '/cancel',
     [
-        'controller' => 'api',
-        'action' => 'trips'
+        'controller' => 'user',
+        'action' => 'cancel'
     ]
-);*/
+);
 
 $router->handle($_SERVER['REQUEST_URI']);

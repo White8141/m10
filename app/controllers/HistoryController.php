@@ -21,7 +21,7 @@ class HistoryController extends ControllerView
                 }*/
                 $this->view->setVar('id', $this->request->getPost('id'));
             } else {
-                $this->view->setVar('message', 'Access denied');
+                $this->view->setVar('message', 'Доступ запрещен. Необходима авторизация');
             }
         }
 

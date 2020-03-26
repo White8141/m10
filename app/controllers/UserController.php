@@ -5,12 +5,15 @@ declare(strict_types=1);
 
 use App\Models\User;
 
-class UserController extends ControllerApi
+class UserController extends ControllerView
 {
     public function indexAction() {
         
     }
 
+    /**
+     * Регистрация пользователя. Принимает параметры в теле POST запроса
+     */
     public function loginAction() {
         if ($this->request->isPost()) {
             $_POST = json_decode(file_get_contents('php://input'), true);
@@ -109,13 +112,19 @@ class UserController extends ControllerApi
         $this->session->remove('phone');
         $this->session->remove('password');
 
-        echo ('OK');
+        $this->response->redirect('/');
     }
 
     public function registrationAction() {
         echo ('registrationAction');
     }
-    
-    
+
+    public function historyAction() {
+        echo ('historyAction');
+    }
+
+    public function cancelAction() {
+        echo ('cancelAction');
+    }
 
 }

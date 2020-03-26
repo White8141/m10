@@ -499,6 +499,35 @@ body .content .content-form form .button-row button.order-button.active:hover {
   color: #fff !important;
 }
 
+body .content .content-history h1 {
+  text-align: center;
+  margin-top: 1rem;
+  color: #9922F0 !important;
+}
+
+body .content .content-history .table {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px #777 solid;
+  box-shadow: 1px 1px 7px #000;
+}
+
+body .content .content-history .table .thead {
+  padding: 0.75rem;
+  background-color: #9922F0;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0px;
+}
+
+body .content .content-history .table .tbody .trow {
+  border: 1px #777 solid;
+  border-radius: 12px;
+  margin: 0.25rem;
+  padding: 0.5rem 0.25rem;
+}
+
 body .content .content-android {
   height: 58px;
   background-color: #9922f0;
@@ -588,7 +617,7 @@ body .content .content-error .error-code {
   margin: 32px auto;
   text-shadow: #9922F0 1px 1px, #9922F0 2px 2px, #9e2ef0 3px 3px, #9e2ef0 4px 4px, #a63ff1 5px 5px, #a63ff1 6px 6px, #aa4cef 7px 7px, #aa4cef 8px 8px, #b058f1 9px 9px, #b058f1 10px 10px, #b767f1 11px 11px, #b767f1 12px 12px, #bc74f1 13px 13px, #bc74f1 14px 14px;
   font-size: 10rem;
-  color: #eee;
+  color: #eee !important;
 }
 
 body .content .content-error .error-message {

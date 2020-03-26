@@ -36,14 +36,23 @@
                         <?php echo $name ?>
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" type="button">Отменить бронирование</button>
+                        <form action="/cancel" method="post">
+                            <input type="hidden" name="id" value="<?php echo $id ?>">
+                            <input type="hidden" name="<?php echo $this->security->getTokenKey() ?>" value="<?php echo $this->security->getToken() ?>">
+                            <button class="dropdown-item" type="submit">Отменить бронирование</button>
+                        </form>
                         <form action="/history" method="post">
                             <input type="hidden" name="id" value="<?php echo $id ?>">
                             <input type="hidden" name="<?php echo $this->security->getTokenKey() ?>" value="<?php echo $this->security->getToken() ?>">
                             <button class="dropdown-item" type="submit">История поездок</button>
                         </form>
+                        <form action="/user/logout" method="post">
+                            <input type="hidden" name="id" value="<?php echo $id ?>">
+                            <input type="hidden" name="<?php echo $this->security->getTokenKey() ?>" value="<?php echo $this->security->getToken() ?>">
+                            <button class="dropdown-item" type="submit">Выйти</button>
+                        </form>
 
-                        <button class="dropdown-item" type="button" id="logout-button">Выйти</button>
+                        <!--button class="dropdown-item" type="button" id="logout-button">Выйти</button-->
                     </div>
                 </div>
             </div>

@@ -485,6 +485,41 @@ body {
         }
       }
     }
+    .content-history {
+
+      h1 {
+        text-align: center;
+        margin-top: 1rem;
+        color: #9922F0 !important;
+      }
+
+      .table {
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px #777 solid;
+        box-shadow: 1px 1px 7px #000;
+
+
+        .thead {
+          padding: .75rem;
+          background-color: #9922F0;
+          color: #fff;
+          font-size: 1.25rem;
+          font-weight: 600;
+          margin: 0px;
+        }
+
+        .tbody {
+
+          .trow {
+            border: 1px #777 solid;
+            border-radius: 12px;
+            margin: .25rem;
+            padding: .5rem .25rem;
+          }
+        }
+      }
+    }
     .content-android {
       height: 58px;
       background-color: #9922f0;
@@ -579,7 +614,7 @@ body {
                       #bc74f1 13px 13px,
                       #bc74f1 14px 14px;
         font-size: 10rem;
-        color: #eee;
+        color: #eee !important;
       }
 
       .error-message {

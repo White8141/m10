@@ -54,7 +54,7 @@ document.getElementById('login-button').onclick = function (event) {
 }
 
 //обработка нажатия конопки выхода
-document.getElementById('logout-button').onclick = function (event) {
+/*document.getElementById('logout-button').onclick = function (event) {
     this.blur();
     var tempForm = document.forms.login;
 
@@ -67,7 +67,7 @@ document.getElementById('logout-button').onclick = function (event) {
         url: '/api/user/logout'
     })
     .then(parseLogout);
-}
+}*/
 
 function parseLogin(responce) {
     /*console.log('user get');
@@ -102,12 +102,12 @@ function parseLogin(responce) {
     }
 }
 
-function parseLogout(responce) {
+/*function parseLogout(responce) {
     if (responce.data == 'OK') {
         //console.log('Нужно переключать меню');
         document.getElementById('guest-menu').classList.remove('invisible');
         document.getElementById('user-menu').classList.add('invisible');
         document.getElementById('login-button').innerHTML = 'Личный кабинет';
     }
-}
+}*/
 

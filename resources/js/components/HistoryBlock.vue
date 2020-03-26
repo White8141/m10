@@ -1,28 +1,26 @@
 <template>
 <div class="container">
     <h1>История поездок</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">Дата</th>
-            <th scope="col">Маршрут</th>
-            <th scope="col">Откуда</th>
-            <th scope="col">Куда</th>
-            <th scope="col">Статус</th>
-            <th scope="col">Комментарии</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="history in historyList" :key="history.ID">
-            <th scope="row">{{ history.CollectDateUniverse | dateTimeFilter}}</th>
-            <td>{{ history.RouteName  | routeNameFilter}}</td>
-            <td>{{ history.MusterRouteItemName }}</td>
-            <td>{{ history.RouteDestinationName}}</td>
-            <td>{{ history.PassengerStateID | statusFilter}}</td>
-            <td>{{ history.Comment }}</td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table table-bordered">
+        <div class="d-none d-md-flex thead row">
+            <div class="col-2">Дата</div>
+            <div class="col-2">Маршрут</div>
+            <div class="col-2">Автобус</div>
+            <div class="col-1">Мест</div>
+            <div class="col-2">Статус</div>
+            <div class="col-3">Комментарии</div>
+        </div>
+        <div class="tbody">
+            <div class="trow row" v-for="history in historyList" :key="history.ID">
+                <div class="col-12 col-md-2">{{ history.CollectDateUniverse | dateTimeFilter}}</div>
+                <div class="col-12 col-md-2">{{ history.RouteName  | routeNameFilter}}</div>
+                <div class="col-12 col-md-2">{{ history.BusName + ' ' + history.BusRegNumber | busNameFilter}}</div>
+                <div class="col-12 col-md-1">{{ history.Count | countFilter}}</div>
+                <div class="col-12 col-md-2">{{ history.PassengerStateID | statusFilter}}</div>
+                <div class="d-none d-md-block col-3">{{ history.Comment }}</div>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -31,7 +29,8 @@
     export default{
         data(){
             return{
-                historyList: []
+                historyList: [],
+                mounthNameArray: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декбря']
             }
         },
         props: {
@@ -84,16 +83,21 @@
             sendRequest: function (target) {
                 switch (target) {
                     case 'get':
-                        axios({
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                            data: {
-                                [this.tokenKey]: this.token,
-                                id: this.id
-                            },
-                            url: '/api/history/getTrips'
-                        })
-                                .then(this.parseTrips);
+                        if (this.id != '') {
+                            axios({
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                data: {
+                                    [this.tokenKey]: this.token,
+                                    id: this.id
+                                },
+                                url: '/api/history/getTrips'
+                            })
+                            .then(this.parseTrips);
+                        } else {
+                            console.log ('Need Auth');
+                        }
+
                         break;
                 }
             },
@@ -130,6 +134,7 @@
             }
         },
         computed: {
+
             /*dateValue: function () {
                 return this.date.split('-').reverse().join('.');
             },
@@ -161,19 +166,39 @@
         },
         filters: {
             dateTimeFilter: function (val) {
-                return val.substr(0, 10) + ' ' + val.substr(11, 5)
+                return val.substr(11, 5) + " " + val.substr(8, 2) + '.' + val.substr(5, 2) + '.' + val.substr(0, 4)
             },
             routeNameFilter: function (val) {
                 return val.substr(1)
+            },
+            busNameFilter: function (val) {
+                if (val.includes('null')) return ''; else return val;
             },
             statusFilter: function (val) {
                 switch (val) {
                     case 1:
                         return "Зарегистрирован"
                         break;
-                    default:
+                    case 5:
                         return "Отменён"
                         break;
+                    default:
+                        return "Завершён"
+                        break;
+                }
+            },
+            countFilter: function (val) {
+                switch (val) {
+                    case 1:
+                        return '1 место';
+                    break;
+                    case ( 2 || 3 || 4):
+                        return val + ' места';
+                        break;
+                    default:
+                        return val + ' мест';
+                        break;
+
                 }
             }
         }
