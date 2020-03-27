@@ -120,11 +120,11 @@ class UserController extends ControllerView
     }
 
     public function historyAction() {
-        echo ('historyAction');
+        //echo ('historyAction');
     }
 
     public function cancelAction() {
-        echo ('cancelAction');
+        //echo ('cancelAction');
     }
 
 }

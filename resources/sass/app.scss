@@ -485,7 +485,7 @@ body {
         }
       }
     }
-    .content-history {
+    .content-history, .content-cancel {
 
       h1 {
         text-align: center;
@@ -828,6 +828,13 @@ body {
           }
         }
 
+      }
+      .content-cancel {
+        button.app-button {
+          position: absolute;
+          bottom: 1rem;
+          right: 1rem;
+        }
       }
       .content-android {
         margin-top: -8px;
