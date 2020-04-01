@@ -5,20 +5,9 @@ class HistoryController extends ControllerView
 {
     public function indexAction()
     {
-        if ($this->request->isPost()) {
+        /*if ($this->request->isPost()) {
             if ($this->security->checkToken(null, null, false)) {
-                /*if( $curl = curl_init() ) {
-                    curl_setopt($curl, CURLOPT_URL, "http://93.84.84.168:9494/BiletionApiService/passengers/byclientid/".$this->request->getPost('id')."?apikey=56tRR980oPkbx");
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
 
-                    $out = curl_exec($curl);
-                    $this->view->setVar('data', $out);
-                    //echo json_encode($out, JSON_UNESCAPED_UNICODE);
-
-                    curl_close($curl);
-                } else {
-                    $this->view->setVar('message', 'Curl Error');
-                }*/
                 $this->view->setVar('id', $this->request->getPost('id'));
             } else {
                 $this->view->setVar('message', 'Доступ запрещен. Необходима авторизация');
@@ -33,7 +22,7 @@ class HistoryController extends ControllerView
                     'params'      => ['Wrong History Request']
                 ]
             );
-        }
+        }*/
     }
 
     public function getTripsAction() {

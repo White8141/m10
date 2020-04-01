@@ -16,7 +16,7 @@
                     <div class="col-12 col-md-3">{{ history.BusName + ' ' + history.BusRegNumber | busNameFilter}}</div>
                     <div class="col-12 col-md-2">{{ history.Count | countFilter}}</div>
                     <div class="col-12 col-md-2">
-                        <button class="app-button">Отменить</button>
+                        <button class="app-button" @click="cancelTrip(history.ID)">Отменить</button>
                     </div>
 
                 </div>
@@ -31,7 +31,6 @@
         data(){
             return{
                 historyList: []
-                //mounthNameArray: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декбря']
             }
         },
         props: {
@@ -136,6 +135,9 @@
                     console.log ('Name: ' + err.name);
                     console.log ('Message: ' + err.message);
                 }
+            },
+            cancelTrip: function (id) {
+                console.log ('Need cancel ' + id);
             }
         },
         computed: {
