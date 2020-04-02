@@ -98,10 +98,12 @@ body {
           }
         }
 
+        .block {
+          display: inline-block;
 
-
-        .block .invisible {
-          display: none;
+          .invisible {
+            display: none;
+          }
         }
 
         img {
@@ -109,36 +111,12 @@ body {
         }
 
         a.text-link {
-          display: block;
+          display: inline-block;
           margin-top: 10px;
           font-weight: 600 !important;
           font-size: 18px;
           color: #9922F0 !important;
         }
-
-        /*.m-2 {
-          margin: 4px !important;
-
-          a {
-            color: #fff !important;
-
-            &.button {
-              display: inline-block;
-              line-height: normal;
-              padding: 10px;
-              border: 1px solid #9922F0;
-              border-radius: 20px;
-              color: #9922F0 !important;
-              background-color: #fff;
-
-              &:hover {
-                background-color: #9922F0;
-                color: #fff !important;
-              }
-            }
-          }
-        }*/
-
       }
     }
   }

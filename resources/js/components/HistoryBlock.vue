@@ -29,8 +29,7 @@
     export default{
         data(){
             return{
-                historyList: [],
-                mounthNameArray: ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декбря']
+                historyList: []
             }
         },
         props: {
@@ -42,42 +41,10 @@
                 type: String,
                 required: true
             },
-            id: {
-                type: String,
-                required: true
-            }
+            id: String
         },
         mounted: function () {
-
-            //выпадающее сверху основное меню
-            var st = $(this).scrollTop();
-            var lastScrollTop = st - 1;
-            var isLinkPanelVisible = true;
-            //спрятать панель, если экран уже прокручен
-            if (st > 0) {
-                $("nav.navbar").css('top', '-80px');
-                isLinkPanelVisible = false;
-            }
-            $(window).scroll(function(event){
-                st = $(this).scrollTop();
-                if (st > lastScrollTop){
-                    if (isLinkPanelVisible) {
-                        //console.log ("Спрятать панель");
-                        $("nav.navbar").css('top', '-80px');
-                        isLinkPanelVisible = false;
-                    }
-                } else {
-                    if (!isLinkPanelVisible) {
-                        //console.log ("Показать панель");
-                        $("nav.navbar").css('top', '0px');
-                        isLinkPanelVisible = true;
-                    }
-                }
-                lastScrollTop = st;
-            });
-
             this.sendRequest('get');
-            //console.log ('Смонтировано');
         },
         methods: {
             sendRequest: function (target) {
@@ -91,7 +58,7 @@
                                     [this.tokenKey]: this.token,
                                     id: this.id
                                 },
-                                url: '/api/history/getTrips'
+                                url: '/api/orders/history'
                             })
                             .then(this.parseTrips);
                         } else {

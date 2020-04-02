@@ -126,7 +126,7 @@ $di->setShared('session', function () {
 });
 
 /**
- * Register deipatcher for Exeption
+ * Register dispatcher for Exeption
  */
 $di->setShared(
     'dispatcher',

@@ -296,7 +296,7 @@
                 $('#collapseDate').collapse('hide');
             });
 
-            //выпадающее сверху основное меню
+            /*//выпадающее сверху основное меню
             var st = $(this).scrollTop();
             var lastScrollTop = st - 1;
             var isLinkPanelVisible = true;
@@ -321,7 +321,7 @@
                     }
                 }
                 lastScrollTop = st;
-            });
+            });*/
 
             $('.content-form .hidden-layer').removeClass('hidden-layer');
 

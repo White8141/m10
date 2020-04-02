@@ -3,29 +3,35 @@ declare(strict_types=1);
 
 class IndexController extends ControllerView
 {
-    public function indexAction()
-    {
-        /*if ($this->session->has('phone') && $this->session->has('password')) {
+    public function indexAction(){
+        
+    }
 
-            $user = User::findFirst([
-                'conditions' => 'phoneNumber = :phone:',
-                'bind'       => [
-                    'phone' => $this->session->get('phone')
+    public function registrationAction () {
+        echo ('reg');
+    }
+
+    public function historyAction () {
+        $this->checkRequest();
+    }
+    
+    public function cancelAction () {
+        $this->checkRequest();
+    }
+
+    /**
+     * Проверка запроса на валидность. Если не проходит, отправить на страницу 404
+     */
+    private function checkRequest() {
+        if (!$this->request->isPost() || !$this->security->checkToken(null, null, false)) {
+            $this->dispatcher->forward(
+                [
+                    'controller' => 'error',
+                    'action'     => 'index',
+                    'params'      => ['Wrong History Request']
                 ]
-            ]);
-
-            if (!is_null($user)) {
-                if ($user->password == $this->session->password) {
-                    $this->view->setVar('isAuth', true);
-                    $this->view->setVar('name', explode(' ', $user->name)[1]);
-                    $this->view->setVar('id', $user->biletionId);
-                } else {
-                    $this->view->setVar('isAuth', false);
-                }
-            }
-        } else {
-            $this->view->setVar('isAuth', false);
-        }*/
+            );
+        }
     }
 }
 

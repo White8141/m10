@@ -50,12 +50,12 @@ class ApiController extends ControllerApi
         );
     }
 
-    //  /api/history
-    public function historyAction ($action, $params = []) {
+    //  /api/orders
+    public function ordersAction ($action, $params = []) {
 
         $this->dispatcher->forward(
             [
-                'controller' => 'history',
+                'controller' => 'orders',
                 'action' => $action,
                 'params' => $params
             ]

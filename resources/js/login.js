@@ -19,7 +19,7 @@ document.getElementById('passwordInput').oninput = function (event) {
 }
 
 //обработка нажатия конопки входа
-document.getElementById('login-button').onclick = function (event) {
+/*document.getElementById('login-button').onclick = function (event) {
     this.blur();
 
     var trigger = true;
@@ -34,7 +34,7 @@ document.getElementById('login-button').onclick = function (event) {
     }
 
     if (trigger) {
-        //console.log('login');
+        console.log('login');
         document.getElementById('alert-message').innerHTML = '';
 
         var tempForm = document.forms.login;
@@ -51,40 +51,12 @@ document.getElementById('login-button').onclick = function (event) {
         })
         .then(parseLogin);
     }
-}
+    console.log ('JQuery disabled');
+}*/
 
-function parseLogin(responce) {
-    //console.log('user get');
-    //console.log('responce: ' + responce.data);
-
-    try {
-        var nameArray = responce.data.name.split(' ');
-        document.getElementById('private-button').innerHTML = nameArray[1];
-
-        document.getElementById('user-menu').classList.remove('invisible');
-        document.getElementById('guest-menu').classList.add('invisible');
-
-        $('#login').modal('hide');
-    } catch (err) {
-        /*console.log('Login Error');
-         console.log('Name ' + err.name);
-         console.log('Message ' + err.message);
-         console.log('Stack ' + err.stack);*/
-        switch (responce.data) {
-            case 'Wrong Data':
-                console.log('Неверные данные');
-                document.getElementById('alert-message').innerHTML = 'Неверные данные.';
-                break;
-            case 'Access denied':
-                console.log('Не прошёл проверку на безопасность'); //
-                document.getElementById('alert-message').innerHTML = 'Ошибка связи с сервером. Обновите страницу.';
-                break;
-            default :
-                document.getElementById('alert-message').innerHTML = 'Ошибка. Попробуйте повторить попытку позже.';
-                break;
-        }
-    }
-}
+/*function parseLogin(responce) {
+    
+}*/
 
 //обработка нажатия конопки выхода
 /*document.getElementById('logout-button').onclick = function (event) {

@@ -6,16 +6,23 @@ $router = $di->getRouter();
  * Что бы убрать из адресной строки префикс /user для истории и отмены поездок
  */
 $router->add (
+    '/registration',
+    [
+        'controller' => 'index',
+        'action' => 'registration'
+    ]
+);
+$router->add (
     '/history',
     [
-        'controller' => 'user',
+        'controller' => 'index',
         'action' => 'history'
     ]
 );
 $router->add (
     '/cancel',
     [
-        'controller' => 'user',
+        'controller' => 'index',
         'action' => 'cancel'
     ]
 );

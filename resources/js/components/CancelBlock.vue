@@ -30,7 +30,8 @@
     export default{
         data(){
             return{
-                historyList: []
+                historyList: [],
+                orderId: ''
             }
         },
         props: {
@@ -42,62 +43,50 @@
                 type: String,
                 required: true
             },
-            id: {
+            userId: {
                 type: String,
                 required: true
             }
         },
         mounted: function () {
-
-            //выпадающее сверху основное меню
-            var st = $(this).scrollTop();
-            var lastScrollTop = st - 1;
-            var isLinkPanelVisible = true;
-            //спрятать панель, если экран уже прокручен
-            if (st > 0) {
-                $("nav.navbar").css('top', '-80px');
-                isLinkPanelVisible = false;
-            }
-            $(window).scroll(function(event){
-                st = $(this).scrollTop();
-                if (st > lastScrollTop){
-                    if (isLinkPanelVisible) {
-                        //console.log ("Спрятать панель");
-                        $("nav.navbar").css('top', '-80px');
-                        isLinkPanelVisible = false;
-                    }
-                } else {
-                    if (!isLinkPanelVisible) {
-                        //console.log ("Показать панель");
-                        $("nav.navbar").css('top', '0px');
-                        isLinkPanelVisible = true;
-                    }
-                }
-                lastScrollTop = st;
-            });
-
             this.sendRequest('get');
-            //console.log ('Смонтировано');
         },
         methods: {
             sendRequest: function (target) {
                 switch (target) {
                     case 'get':
-                        if (this.id != '') {
+                        if (this.userId != '') {
                             axios({
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                                 data: {
                                     [this.tokenKey]: this.token,
-                                    id: this.id
+                                    id: this.userId
                                 },
-                                url: '/api/history/getTrips'
+                                url: '/api/orders/history'
                             })
                                     .then(this.parseTrips);
                         } else {
                             console.log ('Need Auth');
                         }
 
+                        break;
+                    case 'cancel':
+                        //console.log ('Need cancel');
+                        if (this.orderId != '') {
+                            axios({
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                data: {
+                                    [this.tokenKey]: this.token,
+                                    id: this.orderId
+                                },
+                                url: '/api/orders/cancel'
+                            })
+                            .then(this.parseCancel);
+                        } else {
+                            console.log ('Need Auth');
+                        }
                         break;
                 }
             },
@@ -138,6 +127,27 @@
             },
             cancelTrip: function (id) {
                 console.log ('Need cancel ' + id);
+                this.orderId = id;
+                this.sendRequest('cancel');
+            },
+            parseCancel: function (responce) {
+                console.log ('Need parse cancel');
+                try {
+                    this.responceData = JSON.parse(responce.data);
+                    console.log ('Need delete order ' + this.responceData.id);
+                    /*this.routeList.forEach(function (item, i) {
+                     //console.log ('Надо добавить цену маршруту ' + item.CityFrom + ' - ' + item.CityTo);
+                     if (item.ID in this.routePriceList) {
+                     item.Price = this.routePriceList[item.ID];
+                     } else {
+                     item.Price = 0;
+                     }
+                     }, this);*/
+                } catch (err) {
+                    console.log ('Cancel Order Error:');
+                    console.log ('Name: ' + err.name);
+                    console.log ('Message: ' + err.message);
+                }
             }
         },
         computed: {

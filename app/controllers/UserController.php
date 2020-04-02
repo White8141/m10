@@ -12,7 +12,7 @@ class UserController extends ControllerView
     }
 
     /**
-     * Регистрация пользователя. Принимает параметры в теле POST запроса
+     * Вход. Принимает параметры в теле POST запроса
      */
     public function loginAction() {
         if ($this->request->isPost()) {
@@ -111,6 +111,7 @@ class UserController extends ControllerView
     public function logoutAction() {
         $this->session->remove('phone');
         $this->session->remove('password');
+        //$this->session->destroy();
 
         $this->response->redirect('/');
     }
@@ -118,13 +119,4 @@ class UserController extends ControllerView
     public function registrationAction() {
         echo ('registrationAction');
     }
-
-    public function historyAction() {
-        //echo ('historyAction');
-    }
-
-    public function cancelAction() {
-        //echo ('cancelAction');
-    }
-
 }
