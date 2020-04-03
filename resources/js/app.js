@@ -52,6 +52,12 @@ var vm = new Vue({
             lastScrollTop = st;
         });
 
+        $('#login').on('hidden.bs.modal', function (e) {
+            document.getElementById('phoneInput').classList.remove('input-wrong');
+            document.getElementById('passwordInput').classList.remove('input-wrong');
+            document.getElementById('alert-message').innerHTML = '';
+        })
+
         //console.log ('Смонтировано');
     },
     methods: {
@@ -120,6 +126,21 @@ var vm = new Vue({
                         break;
                 }
             }
+        },
+        confirmPhone: function () {
+            //при воде любого значения убрать индикатор неправильно заполненного поля
+            document.getElementById('phoneInput').classList.remove('input-wrong');
+
+            //оставить в поле ввода не более 15 цифр
+            var str = document.getElementById('phoneInput').value;
+            str = str.match(/\d/g) || [];
+            str =str.join('');
+            if (str.length > 15) str = str.substr(0, 15);
+
+            document.getElementById('phoneInput').value = str;
+        },
+        confirmPass: function () {
+            document.getElementById('passwordInput').classList.remove('input-wrong');
         }
     }
 });

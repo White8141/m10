@@ -9,16 +9,30 @@
                 <div class="col-2">Мест</div>
                 <div class="col-2"></div>
             </div>
-            <div class="tbody">
-                <div class="trow row" v-for="history in historyList" :key="history.ID">
-                    <div class="col-12 col-md-2">{{ history.CollectDateUniverse | dateTimeFilter}}</div>
-                    <div class="col-12 col-md-3">{{ history.RouteName  | routeNameFilter}}</div>
-                    <div class="col-12 col-md-3">{{ history.BusName + ' ' + history.BusRegNumber | busNameFilter}}</div>
-                    <div class="col-12 col-md-2">{{ history.Count | countFilter}}</div>
-                    <div class="col-12 col-md-2">
-                        <button class="app-button" @click="cancelTrip(history.ID)">Отменить</button>
+            <div class="tbody" v-if="isOrderEmpty">
+                <div class="trow">
+                    <p class="message">Список заявок пуст</p>
+                </div>
+            </div>
+            <div class="tbody" v-else>
+                <transition-group name="order" tag="div" class="order">
+                    <div class="trow row order-item" v-for="history in historyList" :key="history.ID">
+                        <div class="col-12 col-md-2">
+                            <p class="time">{{ history.CollectDateUniverse | timeFilter}}</p>
+                            <p class="date">{{ history.CollectDateUniverse | dateFilter}}</p>
+                        </div>
+                        <div class="col-8  col-md-3 route-name">{{ history.RouteName  | routeNameFilter}}</div>
+                        <div class="col-12 col-md-3">{{ history.BusName + ' ' + history.BusRegNumber | busNameFilter}}</div>
+                        <div class="col-12 col-md-2 order-count">{{ history.Count | countFilter}}</div>
+                        <div class="col-12 col-md-2">
+                            <button class="app-button" @click="cancelTrip(history.ID)">Отменить</button>
+                        </div>
                     </div>
-
+                </transition-group>
+            </div>
+            <div class="table-preloader" v-if="isPreloadVisible">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
                 </div>
             </div>
         </div>
@@ -31,7 +45,8 @@
         data(){
             return{
                 historyList: [],
-                orderId: ''
+                orderId: '',
+                isPreloadVisible: true
             }
         },
         props: {
@@ -73,6 +88,8 @@
                         break;
                     case 'cancel':
                         //console.log ('Need cancel');
+                        this.isPreloadVisible = true;
+
                         if (this.orderId != '') {
                             axios({
                                 method: 'POST',
@@ -91,25 +108,13 @@
                 }
             },
             parseTrips: function (responce) {
+                this.isPreloadVisible = false;
                 try {
                     this.responceData = JSON.parse(responce.data);
-
-                    /*this.routeList.forEach(function (item, i) {
-                     //console.log ('Надо добавить цену маршруту ' + item.CityFrom + ' - ' + item.CityTo);
-                     if (item.ID in this.routePriceList) {
-                     item.Price = this.routePriceList[item.ID];
-                     } else {
-                     item.Price = 0;
-                     }
-                     }, this);*/
 
                     this.historyList = this.responceData.filter(function (item, i) {
                         return item['PassengerStateID'] == 1;
                     });
-
-                    /*this.responceData.forEach(function(item) {
-                        this.historyList.push(item);
-                    }, this);*/
 
                     this.historyList = this.historyList.sort(function (a, b) {
                         if (+a['CollectDate'] > +b['CollectDate']) {
@@ -118,7 +123,6 @@
                             return 1;
                         }
                     });
-
                 } catch (err) {
                     console.log ('History Trips Error:');
                     console.log ('Name: ' + err.name);
@@ -126,15 +130,23 @@
                 }
             },
             cancelTrip: function (id) {
-                console.log ('Need cancel ' + id);
+                //console.log ('Need cancel ' + id);
                 this.orderId = id;
                 this.sendRequest('cancel');
             },
             parseCancel: function (responce) {
-                console.log ('Need parse cancel');
+                //console.log ('Need parse cancel');
+                this.isPreloadVisible = false;
                 try {
-                    this.responceData = JSON.parse(responce.data);
-                    console.log ('Need delete order ' + this.responceData.id);
+                    this.responceData = (responce.data);
+                    //console.log ('Need delete order ' + this.responceData.id);
+
+                    this.historyList = this.historyList.filter(function (item) {
+                        return item['ID'] != this.responceData.id;
+                    }, this);
+
+                    //console.log ('Order deleted');
+
                     /*this.routeList.forEach(function (item, i) {
                      //console.log ('Надо добавить цену маршруту ' + item.CityFrom + ' - ' + item.CityTo);
                      if (item.ID in this.routePriceList) {
@@ -151,39 +163,16 @@
             }
         },
         computed: {
-
-            /*dateValue: function () {
-             return this.date.split('-').reverse().join('.');
-             },
-             submitButtonDisabled: function () {
-             if (this.time == '0' || this.placeValue == 0) return true;
-             return false;
-             },
-             currMusterTime: function () {
-             if (this.routeId in this.musterTimeArray) {
-             //console.log('Есть такой элемент');
-             return this.musterTimeArray[this.routeId];
-             } else {
-             //console.log('Нет такого элемента');
-             return [5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5];
-
-             }
-             },
-             cityFromPlace: function () {
-             return this.cityFromValue.slice((1 + this.cityFromValue.indexOf('(')), -1);
-             },
-             cityToPlace: function () {
-             return this.cityToValue.slice((1 + this.cityToValue.indexOf('(')), -1);
-             }*/
-        },
-        watch: {
-            currTripId: function (val, oldVal) {
-
+            isOrderEmpty: function () {
+                return this.historyList.length < 1
             }
         },
         filters: {
-            dateTimeFilter: function (val) {
-                return val.substr(11, 5) + " " + val.substr(8, 2) + '.' + val.substr(5, 2) + '.' + val.substr(0, 4)
+            timeFilter: function (val) {
+                return val.substr(11, 5)
+            },
+            dateFilter: function (val) {
+                return val.substr(8, 2) + '.' + val.substr(5, 2) + '.' + val.substr(0, 4)
             },
             routeNameFilter: function (val) {
                 return val.substr(1)

@@ -490,10 +490,19 @@ body .content .content-cancel h1 {
 
 body .content .content-history .table,
 body .content .content-cancel .table {
+  position: relative;
   border-radius: 16px;
   overflow: hidden;
   border: 1px #777 solid;
   box-shadow: 1px 1px 7px #000;
+}
+
+body .content .content-history .table .table-preloader,
+body .content .content-cancel .table .table-preloader {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 25%;
 }
 
 body .content .content-history .table .thead,
@@ -512,6 +521,44 @@ body .content .content-cancel .table .tbody .trow {
   border-radius: 12px;
   margin: 0.25rem;
   padding: 0.5rem 0.25rem;
+}
+
+body .content .content-history .table .tbody .trow p,
+body .content .content-cancel .table .tbody .trow p {
+  margin-bottom: 0px;
+}
+
+body .content .content-history .table .tbody .trow p.time,
+body .content .content-cancel .table .tbody .trow p.time {
+  font-size: 1.25rem;
+}
+
+body .content .content-history .table .tbody .trow p.date,
+body .content .content-cancel .table .tbody .trow p.date {
+  font-weight: 600 !important;
+}
+
+body .content .content-history .table .tbody .trow p.message,
+body .content .content-cancel .table .tbody .trow p.message {
+  height: 54px;
+  padding-top: 0.5rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+body .content .content-history .table .tbody .trow .route-name,
+body .content .content-cancel .table .tbody .trow .route-name {
+  font-size: 1.5rem;
+  line-height: normal;
+}
+
+body .content .content-history .table .tbody .trow .order-count,
+body .content .content-history .table .tbody .trow .route-status,
+body .content .content-history .table .tbody .trow .order-comment,
+body .content .content-cancel .table .tbody .trow .order-count,
+body .content .content-cancel .table .tbody .trow .route-status,
+body .content .content-cancel .table .tbody .trow .order-comment {
+  padding-top: 1rem;
 }
 
 body .content .content-android {
@@ -718,6 +765,16 @@ body footer a.small-letter {
   font-size: 10px;
 }
 
+body .order-item-active,
+body .order-leave-active {
+  transition: opacity 0.5s ease-in-out;
+}
+
+body .order-enter,
+body .order-leave-to {
+  opacity: 0;
+}
+
 body .fade-0-enter-active,
 body .fade-0-leave-active {
   transition: opacity 0.15s;
@@ -799,6 +856,16 @@ body .fade-2-leave-to {
     width: 252px;
   }
 
+  body .content .content-history .table .tbody .trow .order-count,
+  body .content .content-history .table .tbody .trow .route-status,
+  body .content .content-history .table .tbody .trow .order-comment,
+  body .content .content-cancel .table .tbody .trow .order-count,
+  body .content .content-cancel .table .tbody .trow .route-status,
+  body .content .content-cancel .table .tbody .trow .order-comment {
+    padding-top: 0px;
+  }
+
+  body .content .content-history button.app-button,
   body .content .content-cancel button.app-button {
     position: absolute;
     bottom: 1rem;
@@ -815,6 +882,10 @@ body .fade-2-leave-to {
 
   body .content .content-warning p.warning-title {
     font-size: 18px;
+  }
+
+  body .content .content-error .error-code {
+    font-size: 8rem;
   }
 
   body .modal .info-container .info-muster .row {

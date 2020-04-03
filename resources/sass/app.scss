@@ -472,11 +472,18 @@ body {
       }
 
       .table {
+        position: relative;
         border-radius: 16px;
         overflow: hidden;
         border: 1px #777 solid;
         box-shadow: 1px 1px 7px #000;
 
+        .table-preloader {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          top: 25%;
+        }
 
         .thead {
           padding: .75rem;
@@ -489,11 +496,40 @@ body {
 
         .tbody {
 
+
           .trow {
             border: 1px #777 solid;
             border-radius: 12px;
             margin: .25rem;
             padding: .5rem .25rem;
+
+            p {
+              margin-bottom: 0px;
+
+              &.time {
+                font-size: 1.25rem;
+              }
+
+              &.date {
+                font-weight: 600 !important;
+              }
+
+              &.message {
+                height: 54px;
+                padding-top: .5rem;
+                text-align: center;
+                font-size: 1.5rem;
+              }
+            }
+
+            .route-name {
+              font-size: 1.5rem;
+              line-height: normal;
+            }
+
+            .order-count, .route-status, .order-comment {
+              padding-top: 1rem;
+            }
           }
         }
       }
@@ -719,6 +755,14 @@ body {
     }
   }
 
+  .order-item-active, .order-leave-active {
+    transition: opacity .5s ease-in-out;
+  }
+  .order-enter, .order-leave-to {
+    opacity: 0;
+
+  }
+
   .fade-0-enter-active, .fade-0-leave-active {
     transition: opacity .15s;
   }
@@ -807,7 +851,14 @@ body {
         }
 
       }
-      .content-cancel {
+      .content-history, .content-cancel {
+
+        .table .tbody .trow {
+
+          .order-count, .route-status, .order-comment {
+            padding-top: 0px;
+          }
+        }
         button.app-button {
           position: absolute;
           bottom: 1rem;
@@ -825,6 +876,12 @@ body {
           &.warning-title {
             font-size: 18px;
           }
+        }
+      }
+      .content-error {
+
+        .error-code {
+          font-size: 8rem;
         }
       }
     }
