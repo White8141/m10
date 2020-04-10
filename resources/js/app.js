@@ -9,7 +9,8 @@ var vm = new Vue({
         userData: userData,
         userId: '',
         userName: '',
-        isAuth: false
+        isAuth: false,
+        isModalPreloadVisible: false
     },
     created: function () {
         if (this.userData && this.userData.split(',')) {
@@ -76,6 +77,7 @@ var vm = new Vue({
              if (trigger) {
                  //console.log('login');
                  document.getElementById('alert-message').innerHTML = '';
+                 this.isModalPreloadVisible = true;
 
                  var tempForm = document.forms.login;
 
@@ -92,14 +94,15 @@ var vm = new Vue({
                  .then(this.parseLogin);
              }
         },
-        parseLogin: function (responce) {
+        parseLogin: function (response) {
             //console.log('user get');
-            //console.log('responce: ' + responce.data);
+            //console.log('response: ' + response.data);
+            this.isModalPreloadVisible = false;
 
             try {
-                var nameArray = responce.data.name.split(' ');
+                var nameArray = response.data.name.split(' ');
                 this.userName = nameArray[1];
-                this.userId = responce.data.biletionId;
+                this.userId = response.data.biletionId;
                 this.isAuth = true;
 
                 $('#login').modal('hide');
@@ -108,7 +111,7 @@ var vm = new Vue({
                  console.log('Name ' + err.name);
                  console.log('Message ' + err.message);
                  console.log('Stack ' + err.stack);*/
-                switch (responce.data) {
+                switch (response.data) {
                     case 'Wrong Data':
                         console.log('Неверные данные');
                         document.getElementById('alert-message').innerHTML = 'Неверные данные.';
@@ -126,6 +129,56 @@ var vm = new Vue({
                         break;
                 }
             }
+        },
+        recoveryPassword: function () {
+            console.log ('Recovery Pass');
+
+            if (document.getElementById('phoneInput').value.length > 10) {
+                document.getElementById('alert-message').innerHTML = '';
+                this.isModalPreloadVisible = true;
+
+                var tempForm = document.forms.login;
+
+                axios({
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    data: {
+                        [tempForm.tokenKey.value]: tempForm.token.value,
+                        phone: tempForm.phone.value,
+                        password: tempForm.password.value
+                    },
+                    url: '/api/user/recovery'
+                })
+                .then(this.parseRecovery);
+            } else {
+                document.getElementById('phoneInput').classList.add('input-wrong');
+            }
+
+
+        },
+        parseRecovery: function (response) {
+            this.isModalPreloadVisible = false;
+            try {
+                document.getElementById('alert-message').innerHTML = response.data.Description;
+                //var code = response.data.Code
+                //console.log('Code: ' + code);
+                /*switch (code) {
+                    case 'OK':
+                        console.log('Успешно: ' + response.data.Description);
+                        break;
+                    case 'ERROR':
+                        console.log('Ошибка: ' + response.data.Description);
+                        break;
+                    default:
+                        console.log('Ответ: ' + response.data.Description);
+                        break;
+                }*/
+            } catch (err) {
+                console.log ('Recovery Error:');
+                console.log ('Name: ' + err.name);
+                console.log ('Message: ' + err.message);
+            }
+
         },
         confirmPhone: function () {
             //при воде любого значения убрать индикатор неправильно заполненного поля

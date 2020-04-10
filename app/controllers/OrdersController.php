@@ -48,9 +48,9 @@ class OrdersController extends ControllerApi
 
             if ($this->security->checkToken(null, null, false)) {
 
-                echo json_encode(['status' => 'OK', 'id' => $this->request->getPost('id')], JSON_UNESCAPED_UNICODE);
+                //echo json_encode(['status' => 'OK', 'id' => $this->request->getPost('id')], JSON_UNESCAPED_UNICODE);
 
-                /*if( $curl = curl_init() ) {
+                if( $curl = curl_init() ) {
                     curl_setopt($curl, CURLOPT_URL, "http://93.84.84.168:9494/BiletionApiService/passenger/save/".$this->request->getPost('id')."/%D0%9E%D1%82%D0%BC%D0%B5%D0%BD%D0%B0%20%D1%87%D0%B5%D1%80%D0%B5%D0%B7%20%D1%81%D0%B0%D0%B9%D1%82/True/613F5E74-EAEA-4FE8-983B-644198D0F32B?apikey=56tRR980oPkbx");
                     curl_setopt($curl, CURLOPT_RETURNTRANSFER,true);
 
@@ -64,7 +64,7 @@ class OrdersController extends ControllerApi
                     curl_close($curl);
                 } else {
                     echo ('Curl Error');
-                }*/
+                }
             } else {
                 echo ('Access denied');
             }

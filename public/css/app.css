@@ -552,6 +552,11 @@ body .content .content-cancel .table .tbody .trow .route-name {
   line-height: normal;
 }
 
+body .content .content-history .table .tbody .trow .route-status,
+body .content .content-cancel .table .tbody .trow .route-status {
+  font-weight: 600;
+}
+
 body .content .content-history .table .tbody .trow .order-count,
 body .content .content-history .table .tbody .trow .route-status,
 body .content .content-history .table .tbody .trow .order-comment,
@@ -709,7 +714,7 @@ body .modal .modal-header {
 body .modal .modal-body form p.alert-message {
   color: #ff0000 !important;
   text-align: center;
-  min-height: 1.5rem;
+  min-height: 2.5rem;
   line-height: normal;
   margin-bottom: 0px;
 }
@@ -719,9 +724,17 @@ body .modal .modal-body form input.input-wrong {
   box-shadow: #ff0000 0px 0px 7px;
 }
 
-body .modal .modal-footer a {
+body .modal .modal-body .table-preloader {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 25%;
+}
+
+body .modal .modal-footer p {
   margin-top: 0.5rem;
-  color: #9922F0;
+  color: #9922F0 !important;
+  cursor: pointer;
 }
 
 body .modal .modal-footer button {

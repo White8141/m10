@@ -24,7 +24,7 @@
                     <div class="col-12 col-md-2 route-name">{{ history.RouteName  | routeNameFilter}}</div>
                     <div class="col-12 col-md-2">{{ history.BusName + ' ' + history.BusRegNumber | busNameFilter}}</div>
                     <div class="col-12 col-md-1 order-count">{{ history.Count | countFilter}}</div>
-                    <div class="col-12 col-md-2 route-status">{{ history.PassengerStateID | statusFilter}}</div>
+                    <div class="col-12 col-md-2 route-status" :class="colorClass(history.PassengerStateID)">{{ history.PassengerStateID | statusFilter}}</div>
                     <div class="d-none d-md-block col-3 order-comment">{{ history.Comment }}</div>
                 </div>
             </div>
@@ -103,6 +103,12 @@
                     console.log ('History Trips Error:');
                     console.log ('Name: ' + err.name);
                     console.log ('Message: ' + err.message);
+                }
+            },
+            colorClass: function (id) {
+                return {
+                    'text-success': id != '5',
+                    'text-danger' : id == '5'
                 }
             }
         },

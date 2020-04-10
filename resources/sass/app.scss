@@ -526,7 +526,9 @@ body {
               font-size: 1.5rem;
               line-height: normal;
             }
-
+            .route-status {
+              font-weight: 600;
+            }
             .order-count, .route-status, .order-comment {
               padding-top: 1rem;
             }
@@ -689,7 +691,7 @@ body {
         p.alert-message {
           color: #ff0000 !important;
           text-align: center;
-          min-height: 1.5rem;
+          min-height: 2.5rem;
           line-height: normal;
           margin-bottom: 0px;
         }
@@ -700,11 +702,18 @@ body {
         }
       }
 
+      .table-preloader {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        top: 25%;
+      }
     }
     .modal-footer {
-      a {
+      p {
         margin-top: .5rem;
-        color: #9922F0;
+        color: #9922F0 !important;
+        cursor: pointer;
       }
       button {
         min-width: 81px;
